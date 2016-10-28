@@ -2,10 +2,9 @@
 retrofit和rxbus的一些工具类
 ***
 
-### 用法   
-
-1.
-```
+### RetrofitUtils的用法   
+- 添加依赖
+```java
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
@@ -15,9 +14,9 @@ retrofit和rxbus的一些工具类
     compile 'com.trello:rxlifecycle-components:0.6.0'
     
 ```
-2. `RetrofitFactory.setBaseUrl(URL);`
+- 设置baseUrl `RetrofitFactory.setBaseUrl(URL);`
   
-3.create(）里面是retrofit的接口
+- ClockListApi.class是retrofit的接口,getRingList是接口的方法
 ```
 ApiFactory.getFactory().create(ClockListApi.class).getRingList("1085432")
                 .compose(new ResponseTransformer<>(this.<ClockListJson>bindToLifecycle()))
@@ -32,3 +31,14 @@ ApiFactory.getFactory().create(ClockListApi.class).getRingList("1085432")
                 });
                 
 ```
+### RxBus的用法
+- 发消息`RxBus.getInstance().send(++count,"点击次数");`
+- 收消息
+```java
+RxBus.getInstance().toObservable(Integer.class, "点击次数")
+                .subscribe(new RxBusSubscriber<Integer>() {
+                    @Override
+                    public void receive(Integer data) {
+                        btn.setText(String.valueOf(data));
+                    }
+                });```
