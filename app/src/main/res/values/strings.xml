@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">RetrofitUtils</string>
+    <string name="network_error">网络连接异常</string>
+    <string name="network_servier_error">网络服务异常</string>
+    <string name="network_timeout">网络连接超时</string>
+</resources>
