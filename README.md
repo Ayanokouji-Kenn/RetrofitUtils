@@ -17,6 +17,10 @@ retrofit和rxbus的一些工具类
 - 设置baseUrl `RetrofitFactory.setBaseUrl(URL);`
   
 - ClockListApi.class是retrofit的接口,getRingList是接口的方法
+**有坑注意：**
+*在ResponseSubscriber.class里可以看到所有返回的jsonBean都要继承自BaseJsonBean，
+而Gson是序列化的时候如果BaseJsonBean和它的子类拥有相同的字段的话是会报错的
+方便的做法是BaseJsonBean里什么字段都不要放了，在子类里面用jsonFormat之类的插件生成全部字段*
 ```
 ApiFactory.getFactory().create(ClockListApi.class).getRingList("1085432")
                 .compose(new ResponseTransformer<>(this.<ClockListJson>bindToLifecycle()))
