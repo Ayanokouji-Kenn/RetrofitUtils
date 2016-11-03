@@ -5,14 +5,13 @@ package com.aidebar.retrofitutils.Utils.RxBusUtils;
  * @date 2016/8/24 14:24.
  */
 
-import rx.Subscriber;
 
 /**
  * 请使用此类来subscribe RxBus返回的Observable以简化onError与onCompleted函数.
  */
-public abstract class RxBusSubscriber<T> extends Subscriber<T> {
+public abstract class RxBusSubscriber<T> implements org.reactivestreams.Subscriber<T> {
     @Override
-    public void onCompleted() {
+    public void onComplete() {
         completed();
     }
 
