@@ -54,11 +54,8 @@ public class RetrofitFactory {
 
 
             builder.client(client);
-
-
             retrofit = builder.build();
         }
-
         return retrofit;
     }
 }

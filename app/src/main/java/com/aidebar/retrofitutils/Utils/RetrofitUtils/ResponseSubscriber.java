@@ -6,17 +6,19 @@ import android.widget.Toast;
 import com.aidebar.retrofitutils.R;
 import com.aidebar.retrofitutils.Utils.RetrofitUtils.JsonBean.BaseJsonBean;
 
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 
 import retrofit2.adapter.rxjava.HttpException;
-import rx.Subscriber;
 
 /**
  * @author xzj
  * @date 2016/8/25 11:07.
  */
-public abstract class ResponseSubscriber<T> extends Subscriber<T> {
+public abstract class ResponseSubscriber<T> implements Subscriber<T> {
     private Context mContext;
     
     public ResponseSubscriber(Context context) {
@@ -24,7 +26,12 @@ public abstract class ResponseSubscriber<T> extends Subscriber<T> {
     }
 
     @Override
-    public void onCompleted() {
+    public void onSubscribe(Subscription s) {
+        s.request(Long.MAX_VALUE);
+    }
+
+    @Override
+    public void onComplete() {
 
     }
 

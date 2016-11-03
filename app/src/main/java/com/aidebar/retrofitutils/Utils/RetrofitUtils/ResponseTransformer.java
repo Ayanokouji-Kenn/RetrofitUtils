@@ -1,8 +1,12 @@
 package com.aidebar.retrofitutils.Utils.RetrofitUtils;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import org.reactivestreams.Publisher;
+
+import io.reactivex.Flowable;
+import io.reactivex.FlowableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.processors.FlowableProcessor;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * 用于对网络请求的Observable做转换.
@@ -11,24 +15,24 @@ import rx.schedulers.Schedulers;
  * 像这样用 
  * manager.getAds().compose(new ResponseTransformer<>(this.<BaseJsonBean> bindToLifeCycle()));
  */
-public class ResponseTransformer<T> implements Observable.Transformer<T, T> {
+public class ResponseTransformer<T> implements FlowableTransformer<T, T> {
 
-    private Observable.Transformer<T, T> transformer;
+    private FlowableTransformer<T, T> transformer;
 
     public ResponseTransformer() {}
 
-    public ResponseTransformer(Observable.Transformer<T, T> t) {
+    public ResponseTransformer(FlowableTransformer<T, T> t) {
         transformer = t;
-        
     }
 
+
     @Override
-    public Observable<T> call(Observable<T> source) {
+    public Flowable<T> apply(Flowable<T> upstream) {
         if (transformer != null)
-            return transformer.call(source).subscribeOn(Schedulers.io())
+            return ((Flowable)transformer.apply(upstream)).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
         else
-            return source.subscribeOn(Schedulers.io())
+            return upstream.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
     }
 }

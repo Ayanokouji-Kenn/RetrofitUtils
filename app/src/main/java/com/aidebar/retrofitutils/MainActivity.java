@@ -17,6 +17,8 @@ import com.trello.rxlifecycle.components.support.RxFragmentActivity;
 
 import java.util.Observable;
 
+import io.reactivex.Flowable;
+
 public class MainActivity extends RxFragmentActivity {
     String URL = "http://testsvr.aidebar.com/";
     private MainActivity instance;
@@ -42,7 +44,6 @@ public class MainActivity extends RxFragmentActivity {
     public void getData(View v) {
         RxBus.getInstance().send(++count,"点击次数");
         ApiFactory.getFactory().create(ClockListApi.class).getRingList("1085432")
-                .compose(new ResponseTransformer<>(this.<ClockListJson>bindToLifecycle()))
                 .subscribe(new ResponseSubscriber<ClockListJson>(instance) {
                     @Override
                     public void success(ClockListJson clockListJson) {
@@ -53,4 +54,6 @@ public class MainActivity extends RxFragmentActivity {
                     //操作失败和网络失败可以重写operationError和error
                 });
     }
+
+  
 }
